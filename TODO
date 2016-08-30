@@ -1,0 +1,18 @@
+
+
+
+Single image validation and visualization :
+
+- Configure CAFFE_PATH, deploy or validation MODEL_PROTOTXT_PATH, MODEL_WEIGHTS_PATH, optionally MEAN_IMAGE_PATH
+
+
+
+
+
+
+
+
+
+####
+
+caffe test
