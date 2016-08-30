@@ -17,7 +17,11 @@ Tools are divided into categories:
 
 - ...
 - ...
-- single image validation and visualization
+- single image validation and features visualization
+
+For example, features 'heatmap' of the [famous cat](http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb) looks like
+
+<img src="https://github.com/vfdev-5/caffe-tools/blob/master/examples/results/ref_caffenet_cat_visu.png" width="250"/>
 
 
 ## Python 2.7 and dependencies :

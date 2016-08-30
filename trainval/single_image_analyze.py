@@ -74,24 +74,36 @@ def _display_classification_heatmap(image_path, model_path, weights_path, mean_i
             # (C, H, W) -> (H, W, C)
             mean_image = mean_image.transpose((1, 2, 0))
 
-    # output = net_forward_pass(image=image, mean_image=mean_image, model_path=model_path, weights_path=weights_path)
-    output, heatmap = net_heatmap(resolution=0.95, image=image, mean_image=mean_image,
-                                  model_path=model_path, weights_path=weights_path)
+    output, heatmap = net_heatmap(resolution=0.97, image=image, mean_image=mean_image,
+                                  model_path=model_path, weights_path=weights_path, verbose=verbose)
 
-    # # sort top five predictions from softmax output
-    # top_inds = output_prob.argsort()[::-1][:5]  # reverse sort and take five largest items
-    # if labels is not None and len(labels) == len(output_prob):
-    #     print len(labels), len(output_prob)
-    #     print 'top probabilities and labels:', zip(output_prob[top_inds], labels[top_inds])
-    # else:
-    #     print 'top probabilities and indices:', zip(output_prob[top_inds], top_inds)
-    #
-    if verbose:
-        plt.subplot(1, 2, 1)
-        plt.imshow(image)
-        plt.subplot(1, 2, 2)
-        plt.imshow(heatmap)
-        plt.show()
+    key = output.keys()[0]
+    output_prob = output[key][0]
+    # sort top five predictions from softmax output
+    top_inds = output_prob.argsort()[::-1][:5]  # reverse sort and take five largest items
+    if labels is not None and len(labels) == len(output_prob):
+        print len(labels), len(output_prob)
+        print 'top probabilities and labels:', zip(output_prob[top_inds], labels[top_inds])
+        plt.suptitle("Net detection : {} with probability {}".format(labels[top_inds[0]], output_prob[top_inds[0]]))
+    else:
+        print 'top probabilities and indices:', zip(output_prob[top_inds], top_inds)
+        plt.suptitle("Net detection : {} with probability {}".format(top_inds[0], output_prob[top_inds[0]]))
+
+    plt.subplot(1, 3, 1)
+    plt.title("Original image")
+    plt.imshow(image)
+    plt.subplot(1, 3, 2)
+    plt.title("Net features heatmap")
+    plt.imshow(heatmap)
+    merged = image.copy().astype(np.float64)
+    merged[:, :, 0] *= heatmap
+    merged[:, :, 1] *= heatmap
+    merged[:, :, 2] *= heatmap
+    plt.subplot(1, 3, 3)
+    plt.title("Merged images")
+    plt.imshow(merged.astype(np.uint8))
+
+    plt.show()
 
 # _display_forward_pass(image_path, model_path, weights_path, mean_image_path=mean_image_path, labels=labels, verbose=args.verbose)
 _display_classification_heatmap(image_path, model_path, weights_path, mean_image_path=mean_image_path, labels=labels, verbose=args.verbose)

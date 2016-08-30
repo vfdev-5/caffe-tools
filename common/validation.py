@@ -122,15 +122,13 @@ def compute_distance(r1, r2):
     """
     assert r1.shape == r2.shape, "Input arrays should have same shapes: {} != {}".format(r1.shape, r2.shape)
 
-    # Compare the 1st from the batch
-    v1 = r1[0]
-    v2 = r2[0]
-    v = v1 - v2
+    # Compare first 5 largest probabilities:
+    v = r1 - r2
     # max distance value is sqrt(2), min distance value is 0
     return np.sqrt(np.dot(v, v)) / np.sqrt(2)
 
 
-def net_heatmap(resolution, image, mean_image, model_path, weights_path, results_distance=compute_distance, batch_size=5):
+def net_heatmap(resolution, image, mean_image, model_path, weights_path, results_distance=compute_distance, batch_size=5, verbose=False):
     """
     Compute a 'heatmap' of the network on the image using black box mask method.
     - Forward pass is computed on the origin image and output is stored
@@ -145,6 +143,9 @@ def net_heatmap(resolution, image, mean_image, model_path, weights_path, results
 
     :param: results_distance is a function to compute a scalar value from two results of net forward passes
     The signature is func(dict, dict) -> real between 0 and 1
+
+
+    :return:
 
     """
 
@@ -170,9 +171,13 @@ def net_heatmap(resolution, image, mean_image, model_path, weights_path, results
         v0 = res0[key]
         v1 = results[key]
         assert v0.shape[0] == 1 and v1.shape[0] == batch_size, "..."
-        for i in range(v1.shape[0]):
+        for i in range(min(v1.shape[0], count)):
             distance = results_distance(v0[0], v1[i, :])
             heatmap[y_vec[i]:y_vec[i]+bbox_size, x_vec[i]:x_vec[i]+bbox_size] = distance
+
+        if verbose:
+            cv2.imshow("Heatmap interactive computation ...", (255.0 * heatmap).astype(np.uint8))
+            cv2.waitKey(20)
 
     for image_copy, x, y, progress_percent in _blackboxed_image_iterator(image, bbox_size):
         logging.log(logging.INFO, "Net heatmap computation : [%s / 100]" % progress_percent)
@@ -193,11 +198,8 @@ def net_heatmap(resolution, image, mean_image, model_path, weights_path, results
     if count > 0:
         _compute()
 
-
-#     cv2.imshow("heatmap", (255.0 * heatmap).astype(np.uint8))
-    #     cv2.waitKey(20)
-    #
-    # cv2.waitKey(0)
+    if verbose:
+        cv2.destroyAllWindows()
     return res0, heatmap
 
 
