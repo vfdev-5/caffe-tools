@@ -19,9 +19,16 @@ Tools are divided into categories:
 - ...
 - single image validation and features visualization
 
+  - `single_image_analyze.py` computes net forward pass on a single image and a 'heatmap' of trained features of the model detected on this image. See [here](https://github.com/vfdev-5/caffe-tools/blob/master/trainval/README.md) for more details.
+
+
 For example, features 'heatmap' of the [famous cat](http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb) looks like
 
-<img src="https://github.com/vfdev-5/caffe-tools/blob/master/examples/results/ref_caffenet_cat_visu.png" width="250"/>
+<img src="https://github.com/vfdev-5/caffe-tools/blob/master/examples/results/ref_caffenet_cat_visu.png" width="1000"/>
+
+```
+python trainval/single_image_analyze.py cat.jpg bvlc_reference_caffenet/deploy.prototxt bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel --mean ilsvrc12/imagenet_mean.binaryproto --verbose
+```
 
 
 ## Python 2.7 and dependencies :
