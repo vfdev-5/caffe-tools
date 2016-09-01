@@ -17,14 +17,18 @@ NETS_LIST: {
 # List with paths to models
 MODELS_PATH_LIST: [
   /Users/vfomin/Documents/ML/caffe-master_42cd785/models,
-  /Users/vfomin/Documents/ML/fcn/voc-fcn16s
+  /Users/vfomin/Documents/ML/fcn/voc-fcn16s,
+  /Users/vfomin/Documents/ML/fcn/voc-fcn8s,
+  /Users/vfomin/Documents/ML/crfasrnn/python-scripts
 ]
 
 # List with paths to weights
 RESOURCES_PATH_LIST: [
   /Users/vfomin/Documents/ML/caffe-master_42cd785/models,
   /Users/vfomin/Documents/ML/caffe-master_42cd785/data,
-  /Users/vfomin/Documents/ML/fcn/voc-fcn16s
+  /Users/vfomin/Documents/ML/fcn/voc-fcn16s,
+  /Users/vfomin/Documents/ML/fcn/voc-fcn8s,
+  /Users/vfomin/Documents/ML/crfasrnn/python-scripts
 ]
 
 

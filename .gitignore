@@ -1,15 +1,11 @@
 # Created by https://www.gitignore.io/api/python, and modified...
 
 ## Custom ignores
-input/test
-input/train
-pca_svm/results/*.csv
 *.lmdb
 *.binproto
 *.caffemodel
 *.solverstate
-caffe-examples/resources/*.txt
-
+tmp/
 
 ## Linux backup files
 *~

@@ -15,8 +15,6 @@ Tools are divided into categories:
 
 ### Training / validation / visualization
 
-- ...
-- ...
 - single image validation and features visualization
 
   - `single_image_analyze.py` computes net forward pass on a single image and a 'heatmap' of trained features of the model detected on this image. See [here](https://github.com/vfdev-5/caffe-tools/blob/master/trainval/README.md) for more details.
@@ -30,6 +28,12 @@ For example, features 'heatmap' of the [famous cat](http://nbviewer.jupyter.org/
 python trainval/single_image_analyze.py cat.jpg bvlc_reference_caffenet/deploy.prototxt bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel --mean ilsvrc12/imagenet_mean.binaryproto --verbose
 ```
 
+- network model's graph visualization with matplotlib
+
+  - `draw_net.py` displays network model graph as figures using matplotlib. Make sure that you have graphviz and pydotplus installed.
+    ```
+    python draw_net.py /path/to/model.prototxt relative/path/to/model2.prototxt
+    ```
 
 ## Python 2.7 and dependencies :
 

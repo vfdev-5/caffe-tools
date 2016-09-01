@@ -44,7 +44,7 @@ from common.config import cfg
 sys.path.insert(0, join(cfg['CAFFE_PATH'], 'python'))
 
 # import helping methods
-from common import find_file
+from common import find_file, get_abspath
 
 
 #
@@ -65,12 +65,19 @@ parser.add_argument('--save-output', type=str, help='Store computed results in t
 parser.add_argument('--verbose', action='store_true')
 args = parser.parse_args()
 
-image_path = args.path if exists(args.path) else find_file(args.path, [cfg['DATASET_PATH']])
-model_path = args.model if exists(args.model) else find_file(args.model, cfg['MODELS_PATH_LIST'])
-weights_path = args.weights if exists(args.weights) else find_file(args.weights, cfg['RESOURCES_PATH_LIST'])
+image_path = get_abspath(args.path)
+model_path = get_abspath(args.model)
+weights_path = get_abspath(args.weights)
+
+assert image_path is not None, "Input test image file is not found"
+assert model_path is not None, "Input model file is not found"
+assert weights_path is not None, "Input weights file is not found"
+
 mean_image_path = None
 if args.mean is not None:
-    mean_image_path = args.mean if exists(args.mean) else find_file(args.mean, cfg['RESOURCES_PATH_LIST'])
+    mean_image_path = get_abspath(args.mean)
+    assert mean_image_path is not None, "Input mean image file is not found"
+
 output_folder = None
 if args.save_output is not None:
     if not exists(args.save_output):
@@ -96,9 +103,6 @@ from common.validation import NetValidation, _blackboxed_image_iterator
 
 def _display_classification_heatmap(image_path, model_path, weights_path, mean_image_path=None, labels=None,
                                     is_full=False, output_folder=None, verbose=False):
-    assert exists(image_path), "Input test image file is not found"
-    assert exists(model_path), "Input model file is not found"
-    assert exists(weights_path), "Input weights file is not found"
 
     nv = NetValidation(model_path, weights_path)
     nv.verbose = verbose
@@ -172,6 +176,8 @@ def _display_classification_heatmap(image_path, model_path, weights_path, mean_i
             import datetime
             image_name = basename(image_path)
             _save_data(output, 'output')
+
+
 
         output_image = output_image.argmax(axis=0)
 
