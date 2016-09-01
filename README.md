@@ -30,10 +30,11 @@ python trainval/single_image_analyze.py cat.jpg bvlc_reference_caffenet/deploy.p
 
 - network model's graph visualization with matplotlib
 
-  - `draw_net.py` displays network model graph as figures using matplotlib. Make sure that you have graphviz and pydotplus installed.
-    ```
-    python draw_net.py /path/to/model.prototxt relative/path/to/model2.prototxt
-    ```
+  - `draw_net.py` displays network model graph as figures using matplotlib. Make sure that you have *graphviz* and *pydotplus* installed.
+  
+  ```
+  python draw_net.py /path/to/model.prototxt relative/path/to/model2.prototxt
+  ```
 
 ## Python 2.7 and dependencies :
 
