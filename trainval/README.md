@@ -23,10 +23,10 @@ For example :
 python single_image_analysis.py cat.jpg bvlc_reference_caffenet/deploy.prototxt bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel --mean ilsvrc12/imagenet_mean.binaryproto --verbose
 ```
 
-The method to compute model's detected features as a 'heatmap' is simply to compute net forward passes on the input image with a black box inserted at some location and moving it in the image [1][1]. Each forward pass output is compared with the initial one and a scalar product of these two outputs is computed and written to the heatmap.
+The method to compute model's detected features as a 'heatmap' is simply to compute net forward passes on the input image with a black box inserted at some location and moving it in the image. Each forward pass output is compared with the initial one and a scalar product of these two outputs is computed and written to the heatmap. [1]
 
 
 
 ___
 
-[1]: My reference on this method is from [here](https://habrahabr.ru/post/307078/)
+[1] My reference on this method is from [here](https://habrahabr.ru/post/307078/)
