@@ -4,7 +4,7 @@ Before launching scripts, make sure that `config.yaml` file is properly setup.
 
 ####  `single_image_analysis.py`
 
-Script, at first, sets up a trained net, compute forward pass and display the result. Second, it computes model's detected features as a 'heatmap'. Computed hratmap image visually looks like [CAM results](https://github.com/metalbubble/CAM), however the method is different. There are two options to compute the heatmap: *approximative* and *full*.
+Script, at first, sets up a trained net, compute forward pass and display the result. Second, it computes model's detected features as a 'heatmap'. Computed heatmap image visually looks like [CAM results](https://github.com/metalbubble/CAM), however the method is different. There are two options to compute the heatmap: *approximative* and *full*.
 
 Usage :
 ```
