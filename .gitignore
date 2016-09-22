@@ -6,6 +6,7 @@
 *.caffemodel
 *.solverstate
 tmp/
+config.yaml
 
 ## Linux backup files
 *~

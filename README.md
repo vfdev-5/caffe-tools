@@ -15,7 +15,7 @@ Tools are divided into categories:
 
 ### Training / validation / visualization
 
-- single image validation and features visualization
+- single image validation and features visualization for classification CNN
 
   - `single_image_analyze.py` computes net forward pass on a single image and a 'heatmap' of trained features of the model detected on this image. See [here](https://github.com/vfdev-5/caffe-tools/blob/master/trainval/README.md) for more details.
 
@@ -25,7 +25,7 @@ For example, features 'heatmap' of the [famous cat](http://nbviewer.jupyter.org/
 <img src="https://github.com/vfdev-5/caffe-tools/blob/master/examples/results/ref_caffenet_cat_visu.png" width="1000"/>
 
 ```
-python trainval/single_image_analyze.py cat.jpg bvlc_reference_caffenet/deploy.prototxt bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel --mean ilsvrc12/imagenet_mean.binaryproto --verbose
+python trainval/single_image_analysis.py cat.jpg bvlc_reference_caffenet/deploy.prototxt bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel --mean ilsvrc12/imagenet_mean.binaryproto --verbose
 ```
 
 - network model's graph visualization with matplotlib
@@ -39,6 +39,7 @@ python trainval/single_image_analyze.py cat.jpg bvlc_reference_caffenet/deploy.p
 ## Python 2.7 and dependencies :
 
 * pycaffe from [BVLC/caffe](https://github.com/BVLC/caffe)
+* PyYAML
 * numpy
 * matplotlib
 * scipy
@@ -47,12 +48,14 @@ python trainval/single_image_analyze.py cat.jpg bvlc_reference_caffenet/deploy.p
 * opencv
 * lmdb
 
+
 ~~See `requirements.txt` file~~
 
 
 ## How to use
 
-Setup your configuration in the config.yaml
+Setup your configuration in the `config.yaml`:  
+(you can rename and modify `config.yaml.example`)
 ```
 # Path to Caffe repository
 CAFFE_PATH: /path/to/caffe/
