@@ -4,7 +4,7 @@
 #     Script to display the net
 #
 #   usage: draw_net.py [-h] [--direction {TB,LR}] [--phase {TEST,TRAIN}]
-#                    models [models ...]
+#                    model [model ...]
 #
 #   positional arguments:
 #       models                List of models. Pathes can be absolute or relative to

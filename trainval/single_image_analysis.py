@@ -61,6 +61,7 @@ parser.add_argument('weights', metavar='weights_file_path', type=str,
 parser.add_argument('--mean', metavar='mean_image_file_path', type=str,
                     help='Relative to one of RESOURCES_PATH_LIST or absolute path to the mean image .binproto file')
 parser.add_argument('--full', action='store_true', help='Compute a full resolution heatmap')
+parser.add_argument('--tiled-heatmap-resolution', type=int, default=0.95, help='Tiled heatmap resolution parameter [0, 1.0]. Defines roughly the heatmap resolution')
 parser.add_argument('--save-output', type=str, help='Store computed results in the folder')
 parser.add_argument('--verbose', action='store_true')
 args = parser.parse_args()
@@ -102,7 +103,7 @@ from common.validation import NetValidation, _blackboxed_image_iterator
 
 
 def _display_classification_heatmap(image_path, model_path, weights_path, mean_image_path=None, labels=None,
-                                    is_full=False, output_folder=None, verbose=False):
+                                    is_full=False, tiled_heatmap_resolution=0.95, output_folder=None, verbose=False):
 
     nv = NetValidation(model_path, weights_path)
     nv.verbose = verbose
@@ -129,7 +130,7 @@ def _display_classification_heatmap(image_path, model_path, weights_path, mean_i
     if len(nv.net.blobs[key].data.shape) == 2:
         # Classes probability output -> can draw a heatmap
         if not is_full:
-            output, heatmap = nv.tiled_heatmap(resolution=0.70, image=image)
+            output, heatmap = nv.tiled_heatmap(resolution=tiled_heatmap_resolution, image=image)
         else:
             output, heatmap = nv.full_heatmap(bbox_size=40, image=image)
 
@@ -170,30 +171,38 @@ def _display_classification_heatmap(image_path, model_path, weights_path, mean_i
     else:
         # Launch forward pass and display the result:
         output = nv.forward_pass(image)
+        
+        print "KEY : ", key
+        print "OUTPUT[KEY].type : ", type(output[key]), output[key].shape
+        
         output_image = output[key][0]
-
+      
+        for i in range(output_image.shape[0]):
+            print i, np.min(output_image[i, ...]), np.max(output_image[i, ...])
+        
         if output_folder is not None:
             import datetime
             image_name = basename(image_path)
             _save_data(output, 'output')
 
-
-
+        print "OUTPUT IMAGE: ", output_image.shape, output_image.min(), output_image.max()
         output_image = output_image.argmax(axis=0)
-
-        plt.subplot(1, 2, 1)
-        plt.title("Original image")
-        plt.imshow(image)
-        plt.subplot(1, 2, 2)
-        plt.title("Net output image")
-        plt.imshow(output_image)
-        plt.colorbar()
-
-        plt.show()
+        print "OUTPUT IMAGE: ", output_image.shape, output_image.min(), output_image.max()
+        
+        print output_image
+        
+        #plt.subplot(1, 2, 1)
+        #plt.title("Original image")
+        #plt.imshow(image)
+        #plt.subplot(1, 2, 2)
+        #plt.title("Net output image")
+        #plt.imshow(output_image)
+        #plt.colorbar()
+        #plt.show()
 
 
 _display_classification_heatmap(image_path, model_path, weights_path, mean_image_path=mean_image_path, labels=labels,
-                                is_full=args.full, output_folder=output_folder, verbose=args.verbose)
+                                is_full=args.full, tiled_heatmap_resolution=args.tiled_heatmap_resolution, output_folder=output_folder, verbose=args.verbose)
 
 
 
