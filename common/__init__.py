@@ -29,3 +29,35 @@ def get_abspath(path):
     folders.extend(cfg['RESOURCES_PATH_LIST'])
     return path if exists(path) else find_file(path, folders)
 
+    
+def is_net_name(name):
+    """
+    :param name: a net name 
+    :return: True if net name is found in NETS_LIST of config.yaml
+    """
+    return name in cfg['NETS_LIST']
+    
+    
+def get_net_model_path(name):
+    """
+    :param name: a net name 
+    :return: model_path of the net in NETS_LIST of config.yaml
+    """
+    return cfg['NETS_LIST'][name][0]
+
+    
+def get_net_weights_path(name):
+    """
+    :param name: a net name 
+    :return: weights_path of the net in NETS_LIST of config.yaml
+    """
+    return cfg['NETS_LIST'][name][1]
+
+    
+def get_net_mean_image_path(name):
+    """
+    :param name: a net name 
+    :return: mean_image_path of the net in NETS_LIST of config.yaml
+    """
+    return cfg['NETS_LIST'][name][2]   
+    

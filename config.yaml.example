@@ -6,7 +6,7 @@ DATASET_PATH: /Pascal_VOC_2011/VOCdevkit/VOC2011/JPEGImages/
 # Path to labels file
 LABELS_FILE_PATH: /path/to/data/ilsvrc12/synset_words.txt
 
-# List of available nets: [ [<model_label>, <model_path>, <weights_path or ''>, <mean_image_path or ''>], ... ]
+# List of available nets: { <model_label>: [<model_path>, <weights_path or ''>, <mean_image_path or ''>], ...}
 NETS_LIST: {
   'caffe_net': ['bvlc_reference_caffenet/deploy.prototxt', 'bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel', 'ilsvrc12/imagenet_mean.binaryproto'],
   'vgg16': ['vgg/VGG_ILSVRC_16_layers_deploy.prototxt', 'vgg/VGG_ILSVRC_16_layers.caffemodel', 'ilsvrc12/imagenet_mean.binaryproto'],

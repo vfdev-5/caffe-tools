@@ -44,7 +44,7 @@ from common.config import cfg
 sys.path.insert(0, join(cfg['CAFFE_PATH'], 'python'))
 
 # import helping methods
-from common import find_file, get_abspath
+from common import get_abspath, is_net_name, get_net_model_path, get_net_weights_path, get_net_mean_image_path
 
 
 #
@@ -54,9 +54,9 @@ from common import find_file, get_abspath
 parser = argparse.ArgumentParser()
 parser.add_argument('path', metavar='test_image_path', type=str,
                     help='Relative to DATASET_PATH or absolute path to the test image')
-parser.add_argument('model', metavar='model_file_path', type=str,
-                    help='Relative to one of MODELS_PATH_LIST or absolute path to the model prototxt file')
-parser.add_argument('weights', metavar='weights_file_path', type=str,
+parser.add_argument('model_or_net', metavar='model_file_path__or__net_name', type=str,
+                    help='Relative to one of MODELS_PATH_LIST or absolute path to the model prototxt file  OR  a net name from NETS_LIST')
+parser.add_argument('--weights', metavar='weights_file_path', type=str,
                     help='Relative to one of RESOURCES_PATH_LIST or absolute path to the weights .caffemodel file')
 parser.add_argument('--mean', metavar='mean_image_file_path', type=str,
                     help='Relative to one of RESOURCES_PATH_LIST or absolute path to the mean image .binproto file')
@@ -67,18 +67,28 @@ parser.add_argument('--verbose', action='store_true')
 args = parser.parse_args()
 
 image_path = get_abspath(args.path)
-model_path = get_abspath(args.model)
-weights_path = get_abspath(args.weights)
-
 assert image_path is not None, "Input test image file is not found"
+
+# check if its a name of net:
+if is_net_name(args.model_or_net):
+    model_path = get_net_model_path(args.model_or_net)
+    weights_path = get_net_weights_path(args.model_or_net)
+    mean_image_path = get_net_mean_image_path(args.model_or_net)
+else:
+    model_path = args.model_or_net
+    weights_path = args.weights
+    mean_image_path = args.mean
+    
+model_path = get_abspath(model_path)
+if weights_path is not None:
+    weights_path = get_abspath(weights_path)
+if mean_image_path is not None:
+    mean_image_path = get_abspath(mean_image_path)
+    
 assert model_path is not None, "Input model file is not found"
 assert weights_path is not None, "Input weights file is not found"
-
-mean_image_path = None
-if args.mean is not None:
-    mean_image_path = get_abspath(args.mean)
-    assert mean_image_path is not None, "Input mean image file is not found"
-
+assert mean_image_path is not None, "Input mean image file is not found"
+    
 output_folder = None
 if args.save_output is not None:
     if not exists(args.save_output):
@@ -92,7 +102,7 @@ if 'LABELS_FILE_PATH' in cfg:
     labels = np.loadtxt(cfg['LABELS_FILE_PATH'], str, delimiter='\t')
 else:
     labels = None
-
+    
 if cfg['USE_CPU']:
     import caffe
     caffe.set_mode_cpu()
